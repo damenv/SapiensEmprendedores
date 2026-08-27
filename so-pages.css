@@ -1,7 +1,7 @@
 /* ============================================================
    Sapiens Optimizado — Brand pages (multi-page shell)
    Static-site counterpart of the .so-* classes in src/styles.css,
-   used by the hand-built pages under public/site/.
+   used by the hand-built pages at the repo root.
    ============================================================ */
 .so-page {
   --so-bg: #0a0f0d;
