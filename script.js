@@ -3,6 +3,22 @@
   var y = document.getElementById('year');
   if (y) y.textContent = new Date().getFullYear();
 
+  // Mobile nav burger toggle
+  var burger = document.querySelector('.site-nav__burger');
+  var navLinks = document.querySelector('.site-nav__links');
+  if (burger && navLinks) {
+    burger.addEventListener('click', function(){
+      var open = navLinks.classList.toggle('is-open');
+      burger.setAttribute('aria-expanded', String(open));
+    });
+    navLinks.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        navLinks.classList.remove('is-open');
+        burger.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
   // Reveal on scroll
   var revealTargets = document.querySelectorAll('.reveal');
   var scenes = document.querySelectorAll('.scene');

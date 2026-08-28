@@ -70,6 +70,7 @@
   font-weight: 600; transition: 0.25s var(--so-ease);
 }
 .so-nav__cta:hover { background: transparent; color: var(--so-green-bright); }
+.so-nav__links-cta { display: none; }
 .so-nav__burger {
   display: none; background: none; border: none; cursor: pointer;
   width: 40px; height: 40px; padding: 8px; flex-direction: column;
@@ -81,6 +82,7 @@
 
 @media (max-width: 900px) {
   .so-nav__burger { display: flex; }
+  .so-nav__cta { display: none; }
   .so-nav__links {
     position: fixed; top: 64px; left: 0; right: 0;
     flex-direction: column; align-items: stretch;
@@ -92,7 +94,7 @@
   }
   .so-nav__links.is-open { transform: translateY(0); opacity: 1; pointer-events: auto; }
   .so-nav__link { font-size: 15px; padding: 8px 0; }
-  .so-nav__cta { margin-left: 0; text-align: center; }
+  .so-nav__links-cta { display: inline-block; margin-left: 0; margin-top: 8px; text-align: center; }
 }
 
 /* Shared typography */

@@ -294,6 +294,28 @@ footer{background:#000;padding:80px 6vw;text-align:center;color:var(--ink-dim)}
 }
 .site-nav__links a:hover { color: var(--ink); }
 .site-nav__links a.is-active { color: var(--green-bright); }
+.site-nav__links-cta { display: none; }
+.site-nav__burger {
+  display: none; background: none; border: none; cursor: pointer;
+  width: 40px; height: 40px; padding: 8px; flex-direction: column;
+  justify-content: space-between; align-items: stretch;
+}
+.site-nav__burger span {
+  display: block; height: 2px; background: var(--ink); border-radius: 2px;
+}
 @media (max-width: 900px) {
-  .site-nav__links { display: none; }
+  .site-nav__burger { display: flex; }
+  .cta-mini { display: none; }
+  .site-nav__links {
+    position: fixed; top: 64px; left: 0; right: 0; z-index: 50;
+    flex-direction: column; align-items: stretch;
+    background: rgba(0, 0, 0, 0.95);
+    padding: 24px; gap: 18px;
+    display: flex;
+    transform: translateY(-120%); opacity: 0; pointer-events: none;
+    transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+  }
+  .site-nav__links.is-open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+  .site-nav__links a { font-size: 15px; padding: 8px 0; }
+  .site-nav__links-cta { display: inline-block; margin-top: 8px; text-align: center; }
 }
