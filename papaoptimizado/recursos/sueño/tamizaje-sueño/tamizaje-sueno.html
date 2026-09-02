@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Tu cansancio es hábito o alarma médica? — Tamizaje de sueño</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#11151C;
+  --night-2:#181E27;
+  --surface:#1E2530;
+  --line:#2C3542;
+  --amber:#F2A93B;
+  --amber-dim:#8A6524;
+  --clinic:#EDF0F2;
+  --ink:#D9DFE6;
+  --muted:#818D9C;
+  --verde:#4E9A6B;
+  --rojo:#C2453D;
+  --display:'Archivo',sans-serif;
+  --body:'Source Serif 4',Georgia,serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--night);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.6;
+  min-height:100vh;
+}
+.wrap{max-width:620px;margin:0 auto;padding:0 22px 80px}
+
+/* ---------- HERO ---------- */
+.hero{padding:64px 0 40px;text-align:center}
+.clock{
+  font-family:var(--mono);
+  font-weight:700;
+  font-size:clamp(58px,17vw,92px);
+  letter-spacing:.04em;
+  color:var(--amber);
+  line-height:1;
+  text-shadow:0 0 32px rgba(242,169,59,.28);
+}
+.clock .colon{animation:blink 2.4s steps(1,end) infinite}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.25}}
+.clock-label{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--amber-dim);
+  margin-top:14px;
+}
+h1{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:clamp(27px,6.4vw,38px);
+  line-height:1.15;
+  letter-spacing:-.02em;
+  color:#fff;
+  margin:38px 0 18px;
+}
+.lede{color:var(--muted);font-size:17px;max-width:44ch;margin:0 auto}
+.lede strong{color:var(--ink);font-weight:600}
+
+.meta{
+  display:flex;justify-content:center;gap:26px;flex-wrap:wrap;
+  margin:34px 0 0;
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);
+}
+
+.btn{
+  display:block;width:100%;
+  font-family:var(--display);font-weight:600;font-size:17px;
+  background:var(--amber);color:#11151C;
+  border:none;border-radius:3px;
+  padding:19px 24px;margin-top:34px;
+  cursor:pointer;
+  transition:background .18s ease,transform .18s ease;
+}
+.btn:hover{background:#FFC163}
+.btn:active{transform:translateY(1px)}
+.btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.btn-ghost{
+  background:transparent;color:var(--amber);
+  border:1px solid var(--line);
+}
+.btn-ghost:hover{background:var(--night-2);color:#FFC163}
+
+.disclaimer{
+  margin-top:30px;padding:16px 18px;
+  border-left:2px solid var(--amber-dim);
+  background:var(--night-2);
+  font-size:14px;line-height:1.55;color:var(--muted);text-align:left;
+}
+.disclaimer b{color:var(--ink);font-weight:600}
+
+/* ---------- PROGRESO ---------- */
+.progress-bar{
+  position:sticky;top:0;z-index:10;
+  height:3px;background:var(--line);
+  margin:0 -22px;
+}
+.progress-fill{height:100%;background:var(--amber);width:0;transition:width .3s ease}
+
+.step-count{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  color:var(--muted);text-transform:uppercase;
+  padding:28px 0 0;
+}
+.block-name{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  color:var(--amber-dim);text-transform:uppercase;margin-top:6px;
+}
+
+/* ---------- PREGUNTAS ---------- */
+.q{padding:30px 0 0;animation:fade .28s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.q-text{
+  font-family:var(--display);font-weight:600;
+  font-size:clamp(21px,4.8vw,26px);line-height:1.3;
+  color:#fff;margin-bottom:10px;
+}
+.q-help{color:var(--muted);font-size:15px;margin-bottom:24px}
+
+.opt{
+  display:block;width:100%;text-align:left;
+  font-family:var(--body);font-size:17px;color:var(--ink);
+  background:var(--night-2);
+  border:1px solid var(--line);border-radius:3px;
+  padding:17px 18px;margin-bottom:10px;
+  cursor:pointer;
+  transition:border-color .15s ease,background .15s ease;
+}
+.opt:hover{border-color:var(--amber-dim);background:var(--surface)}
+.opt:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.opt .k{
+  font-family:var(--mono);font-size:12px;color:var(--muted);
+  margin-right:12px;
+}
+
+.fields{margin-bottom:8px}
+.field{margin-bottom:18px}
+.field label{
+  display:block;font-family:var(--mono);font-size:11px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:7px;
+}
+.field input,.field select{
+  width:100%;font-family:var(--mono);font-size:17px;
+  background:var(--night-2);color:var(--ink);
+  border:1px solid var(--line);border-radius:3px;
+  padding:14px 15px;
+}
+.field input:focus,.field select:focus{outline:2px solid var(--amber);outline-offset:-1px;border-color:transparent}
+.field .hint{font-family:var(--body);font-size:14px;color:var(--muted);margin-top:6px;text-transform:none;letter-spacing:0}
+.err{color:var(--rojo);font-size:15px;margin-bottom:14px;display:none}
+
+.back{
+  background:none;border:none;color:var(--muted);
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;cursor:pointer;padding:22px 0 0;
+}
+.back:hover{color:var(--amber)}
+
+/* ---------- RESULTADO ---------- */
+.result{animation:fade .35s ease;padding-top:34px}
+.verdict{
+  border-radius:3px;padding:30px 26px;margin-bottom:8px;
+  background:var(--clinic);color:#11151C;
+}
+.verdict-tag{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;margin-bottom:14px;font-weight:700;
+}
+.verdict h2{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(23px,5.4vw,30px);line-height:1.2;
+  letter-spacing:-.02em;margin-bottom:14px;
+}
+.verdict p{font-size:16.5px;line-height:1.6;color:#33404F}
+.verdict p+p{margin-top:12px}
+.bar-rojo{border-top:5px solid var(--rojo)}
+.bar-ambar{border-top:5px solid var(--amber)}
+.bar-verde{border-top:5px solid var(--verde)}
+.tag-rojo{color:var(--rojo)}
+.tag-ambar{color:#B07A18}
+.tag-verde{color:var(--verde)}
+
+.scores{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:var(--line);border:1px solid var(--line);
+  margin:26px 0;
+}
+.score{background:var(--night-2);padding:20px 18px}
+.score-name{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:10px;
+}
+.score-val{font-family:var(--mono);font-size:31px;font-weight:700;color:#fff;line-height:1}
+.score-val span{font-size:15px;color:var(--muted);font-weight:400}
+.score-tier{font-size:14.5px;margin-top:8px;line-height:1.45}
+
+.flags{margin:26px 0}
+.flags h3,.next h3{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--amber-dim);
+  margin-bottom:14px;font-weight:400;
+}
+.flag{
+  display:flex;gap:13px;padding:14px 0;
+  border-top:1px solid var(--line);font-size:16px;line-height:1.5;
+}
+.flag:last-child{border-bottom:1px solid var(--line)}
+.flag .mark{font-family:var(--mono);font-weight:700;flex-shrink:0}
+.mark-r{color:var(--rojo)}
+.mark-a{color:var(--amber)}
+.mark-v{color:var(--verde)}
+
+.next{margin:32px 0}
+.next ol{list-style:none;counter-reset:s}
+.next li{
+  counter-increment:s;position:relative;
+  padding:0 0 18px 40px;font-size:16.5px;line-height:1.55;
+}
+.next li::before{
+  content:counter(s);position:absolute;left:0;top:1px;
+  font-family:var(--mono);font-size:12px;font-weight:700;
+  color:var(--amber);border:1px solid var(--amber-dim);
+  width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+}
+
+.cta-box{
+  border:1px solid var(--line);border-radius:3px;
+  padding:28px 24px;margin-top:34px;background:var(--night-2);
+}
+.cta-box h3{
+  font-family:var(--display);font-weight:700;font-size:21px;
+  color:#fff;margin-bottom:10px;letter-spacing:-.01em;
+}
+.cta-box p{color:var(--muted);font-size:16px}
+
+.footnote{
+  margin-top:40px;padding-top:24px;border-top:1px solid var(--line);
+  font-size:13.5px;line-height:1.6;color:var(--muted);
+}
+.footnote b{color:var(--ink);font-weight:600}
+
+.hidden{display:none}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+@media (max-width:420px){
+  .scores{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ============ PANTALLA 1: INTRO ============ -->
+<section id="intro">
+  <div class="hero">
+    <div class="clock">3<span class="colon">:</span>47</div>
+    <div class="clock-label">La hora que ya conoces</div>
+
+    <h1>¿Tu cansancio es un problema de hábitos o una alarma médica?</h1>
+
+    <p class="lede">Hay dos razones por las que un hombre de 40 amanece cansado. Una se arregla cambiando cómo vives tus noches. La otra necesita un médico — y <strong>4 de cada 5 hombres que la tienen no lo saben.</strong></p>
+
+    <div class="meta">
+      <span>5 minutos</span>
+      <span>21 preguntas</span>
+      <span>Resultado inmediato</span>
+    </div>
+
+    <button class="btn" id="start">Empezar el tamizaje</button>
+
+    <div class="disclaimer">
+      <b>Esto no es un diagnóstico.</b> Somos entrenadores, no médicos. Esta herramienta usa dos cuestionarios validados que los especialistas del sueño aplican en todo el mundo — STOP-BANG y la Escala de Somnolencia de Epworth — para decirte una sola cosa: si lo que te pasa amerita que veas a un doctor o no. Nada más, y nada menos.
+    </div>
+  </div>
+</section>
+
+<!-- ============ PANTALLA 2: CUESTIONARIO ============ -->
+<section id="quiz" class="hidden">
+  <div class="progress-bar"><div class="progress-fill" id="fill"></div></div>
+  <div class="step-count" id="stepCount"></div>
+  <div class="block-name" id="blockName"></div>
+  <div id="qBody"></div>
+  <button class="back hidden" id="back">← Atrás</button>
+</section>
+
+<!-- ============ PANTALLA 3: RESULTADO ============ -->
+<section id="result" class="hidden"></section>
+
+</div>
+
+<script>
+/* =======================================================================
+   CONFIGURACIÓN — CAMBIA ESTAS DOS LÍNEAS ANTES DE PUBLICAR
+   ======================================================================= */
+const WHATSAPP_NUMERO = "50200000000";        // tu número con código de país, sin +
+const NOMBRE_PROGRAMA = "el protocolo de 7 días";
+/* ======================================================================= */
+
+const state = { i:0, ans:{} };
+
+const preguntas = [
+  /* ---------- BLOQUE 1: DATOS ---------- */
+  {
+    bloque:"Bloque 1 · Tu cuerpo",
+    tipo:"campos",
+    texto:"Empecemos con lo medible.",
+    ayuda:"Estos datos entran en un cálculo de riesgo. Nada se guarda ni se envía a ningún lado.",
+    campos:[
+      {id:"edad", label:"Edad", tipo:"number", ph:"42", hint:""},
+      {id:"peso", label:"Peso (kg)", tipo:"number", ph:"88", hint:"Si lo sabes en libras, divide entre 2.2"},
+      {id:"altura", label:"Estatura (cm)", tipo:"number", ph:"175", hint:""},
+      {id:"cuello", label:"Cuello (cm)", tipo:"select", opts:[
+        {v:"", t:"Elige una opción"},
+        {v:"si", t:"Más de 40 cm (camisa talla 16 o más)"},
+        {v:"no", t:"40 cm o menos"},
+        {v:"nose", t:"No lo sé"}
+      ], hint:"Mídelo con una cinta, o revisa la talla de cuello de tus camisas de vestir."},
+      {id:"sexo", label:"Sexo", tipo:"select", opts:[
+        {v:"", t:"Elige una opción"},
+        {v:"h", t:"Hombre"},
+        {v:"m", t:"Mujer"}
+      ], hint:""}
+    ]
+  },
+
+  /* ---------- BLOQUE 2: STOP ---------- */
+  {
+    bloque:"Bloque 2 · Tus noches",
+    tipo:"opciones", id:"ronquido",
+    texto:"¿Roncas fuerte?",
+    ayuda:"Fuerte significa: se oye a través de una puerta cerrada, o tu pareja te ha dado codazos por eso.",
+    opts:[{v:1,t:"Sí"},{v:0,t:"No"},{v:0,t:"No sé — duermo solo",flag:"preguntar"}]
+  },
+  {
+    bloque:"Bloque 2 · Tus noches",
+    tipo:"opciones", id:"cansancio",
+    texto:"¿Te sientes cansado o con sueño durante el día, casi todos los días?",
+    ayuda:"No hablamos de un mal día. Hablamos de lo normal en tu semana.",
+    opts:[{v:1,t:"Sí"},{v:0,t:"No"}]
+  },
+  {
+    bloque:"Bloque 2 · Tus noches",
+    tipo:"opciones", id:"apneas",
+    texto:"¿Alguien te ha dicho que dejas de respirar, te ahogas o jadeas mientras duermes?",
+    ayuda:"Esta es la pregunta más importante del cuestionario. Si nunca has preguntado, pregúntale hoy a tu pareja.",
+    opts:[{v:1,t:"Sí, me lo han dicho"},{v:0,t:"No"},{v:0,t:"No sé — nadie me ha visto dormir",flag:"preguntar"}]
+  },
+  {
+    bloque:"Bloque 2 · Tus noches",
+    tipo:"opciones", id:"presion",
+    texto:"¿Tienes presión alta, o tomas medicamento para la presión?",
+    ayuda:"",
+    opts:[{v:1,t:"Sí"},{v:0,t:"No"},{v:0,t:"No lo sé"}]
+  },
+
+  /* ---------- BLOQUE 3: EPWORTH ---------- */
+  ...[
+    ["leer","Sentado leyendo"],
+    ["tv","Viendo televisión"],
+    ["publico","Sentado sin hacer nada en un lugar público (una reunión, el cine, la iglesia)"],
+    ["pasajero","Como pasajero en un carro, una hora seguida sin parar"],
+    ["tarde","Acostado en la tarde a descansar, cuando las circunstancias lo permiten"],
+    ["conversando","Sentado conversando con alguien"],
+    ["almuerzo","Sentado tranquilo después de almorzar, sin haber tomado alcohol"],
+    ["trafico","En el carro, detenido unos minutos en el tráfico"]
+  ].map(([id,sit])=>({
+    bloque:"Bloque 3 · Tus días",
+    tipo:"opciones", id:"ep_"+id, epworth:true,
+    texto:"¿Qué tan probable es que te quedes dormido en esta situación?",
+    ayuda:sit,
+    opts:[
+      {v:0,t:"Nunca me pasaría"},
+      {v:1,t:"Poca probabilidad"},
+      {v:2,t:"Probabilidad moderada"},
+      {v:3,t:"Alta probabilidad"}
+    ]
+  })),
+
+  /* ---------- BLOQUE 4: CONTEXTO ---------- */
+  {
+    bloque:"Bloque 4 · Tu contexto",
+    tipo:"opciones", id:"manejando",
+    texto:"¿Te has quedado dormido, o has cabeceado, manejando?",
+    ayuda:"Incluye microsegundos. Incluye el semáforo. Incluye esa vez que te asustaste.",
+    opts:[{v:1,t:"Sí, me ha pasado"},{v:0,t:"No, nunca"}]
+  },
+  {
+    bloque:"Bloque 4 · Tu contexto",
+    tipo:"opciones", id:"insomnio",
+    texto:"¿Te cuesta dormirte, o te despiertas y no puedes volver a dormir, 3 o más noches por semana — desde hace 3 meses o más?",
+    ayuda:"Las dos partes importan: la frecuencia y el tiempo que lleva pasando.",
+    opts:[{v:1,t:"Sí, las dos cosas"},{v:0,t:"Me pasa, pero no tan seguido ni desde hace tanto"},{v:0,t:"No"}]
+  },
+  {
+    bloque:"Bloque 4 · Tu contexto",
+    tipo:"opciones", id:"animo",
+    texto:"En las últimas dos semanas, ¿te has sentido decaído, sin ánimo, o sin interés en cosas que normalmente disfrutas — la mayoría de los días?",
+    ayuda:"El sueño y el estado de ánimo se empujan uno al otro en las dos direcciones. Preguntamos porque cambia qué tipo de ayuda te sirve.",
+    opts:[{v:1,t:"Sí"},{v:0,t:"No"}]
+  },
+  {
+    bloque:"Bloque 4 · Tu contexto",
+    tipo:"opciones", id:"alcohol",
+    texto:"¿Tomas alcohol para ayudarte a dormir, 3 o más noches por semana?",
+    ayuda:"Sin juicio. Es de las respuestas más útiles de todo el cuestionario.",
+    opts:[{v:1,t:"Sí"},{v:0,t:"No"}]
+  },
+  {
+    bloque:"Bloque 4 · Tu contexto",
+    tipo:"opciones", id:"hijos",
+    texto:"¿Tienes hijos que todavía te despiertan en la noche?",
+    ayuda:"Esto no suma riesgo. Cambia qué consejos tienen sentido para ti y cuáles son inútiles.",
+    opts:[{v:1,t:"Sí, seguido"},{v:1,t:"A veces"},{v:0,t:"Ya no"}]
+  }
+];
+
+const $=id=>document.getElementById(id);
+
+$("start").onclick=()=>{
+  $("intro").classList.add("hidden");
+  $("quiz").classList.remove("hidden");
+  render();
+  window.scrollTo(0,0);
+};
+
+$("back").onclick=()=>{
+  if(state.i>0){state.i--;render();window.scrollTo(0,0);}
+};
+
+function render(){
+  const q=preguntas[state.i];
+  $("fill").style.width=((state.i)/preguntas.length*100)+"%";
+  $("stepCount").textContent=`Pregunta ${state.i+1} de ${preguntas.length}`;
+  $("blockName").textContent=q.bloque;
+  $("back").classList.toggle("hidden",state.i===0);
+
+  let html=`<div class="q"><div class="q-text">${q.texto}</div>`;
+  if(q.ayuda) html+=`<div class="q-help">${q.ayuda}</div>`;
+
+  if(q.tipo==="campos"){
+    html+=`<div class="err" id="fieldErr"></div><div class="fields">`;
+    q.campos.forEach(c=>{
+      html+=`<div class="field"><label for="${c.id}">${c.label}</label>`;
+      if(c.tipo==="select"){
+        html+=`<select id="${c.id}">`;
+        c.opts.forEach(o=>html+=`<option value="${o.v}">${o.t}</option>`);
+        html+=`</select>`;
+      }else{
+        html+=`<input type="number" id="${c.id}" placeholder="${c.ph}" inputmode="numeric">`;
+      }
+      if(c.hint) html+=`<div class="hint">${c.hint}</div>`;
+      html+=`</div>`;
+    });
+    html+=`</div><button class="btn" id="next">Continuar</button>`;
+  }else{
+    q.opts.forEach((o,idx)=>{
+      html+=`<button class="opt" data-v="${o.v}" data-flag="${o.flag||''}">
+        <span class="k">${String.fromCharCode(65+idx)}</span>${o.t}</button>`;
+    });
+  }
+  html+=`</div>`;
+  $("qBody").innerHTML=html;
+
+  if(q.tipo==="campos"){
+    // restaurar valores previos
+    q.campos.forEach(c=>{ if(state.ans[c.id]!==undefined) $(c.id).value=state.ans[c.id]; });
+    $("next").onclick=()=>{
+      const vals={};
+      let falta=false;
+      q.campos.forEach(c=>{
+        const v=$(c.id).value.trim();
+        if(!v) falta=true;
+        vals[c.id]=v;
+      });
+      if(falta){
+        const e=$("fieldErr");
+        e.textContent="Faltan datos. Completa los cinco campos para seguir.";
+        e.style.display="block";
+        return;
+      }
+      Object.assign(state.ans,vals);
+      avanzar();
+    };
+  }else{
+    document.querySelectorAll(".opt").forEach(b=>{
+      b.onclick=()=>{
+        state.ans[q.id]=Number(b.dataset.v);
+        if(b.dataset.flag) state.ans[q.id+"_flag"]=b.dataset.flag;
+        else delete state.ans[q.id+"_flag"];
+        avanzar();
+      };
+    });
+  }
+}
+
+function avanzar(){
+  state.i++;
+  if(state.i>=preguntas.length){ mostrarResultado(); }
+  else { render(); window.scrollTo(0,0); }
+}
+
+function mostrarResultado(){
+  const a=state.ans;
+
+  /* ---- STOP-BANG ---- */
+  const peso=parseFloat(a.peso), alt=parseFloat(a.altura)/100;
+  const imc = (peso>0 && alt>0) ? peso/(alt*alt) : 0;
+  let sb=0;
+  sb+=a.ronquido||0;
+  sb+=a.cansancio||0;
+  sb+=a.apneas||0;
+  sb+=a.presion||0;
+  if(imc>35) sb++;
+  if(parseInt(a.edad)>50) sb++;
+  if(a.cuello==="si") sb++;
+  if(a.sexo==="h") sb++;
+
+  /* ---- EPWORTH ---- */
+  let ep=0;
+  Object.keys(a).forEach(k=>{ if(k.startsWith("ep_")) ep+=a[k]; });
+
+  /* ---- RUTEO ---- */
+  const rojo = sb>=5 || a.apneas===1 || ep>=15 || a.manejando===1;
+  const ambar = !rojo && (sb>=3 || ep>=11 || a.insomnio===1 || a.animo===1);
+  const nivel = rojo?"rojo":(ambar?"ambar":"verde");
+
+  /* ---- TEXTOS DE VEREDICTO ---- */
+  const veredictos={
+    rojo:{
+      tag:"Resultado · Ve con un médico",
+      h:"Esto no se arregla con hábitos. Necesitas una evaluación médica.",
+      p:[
+        "Tus respuestas marcan señales que se asocian con <b>apnea obstructiva del sueño</b> u otro trastorno que requiere diagnóstico. No podemos decirte si la tienes — eso solo lo determina un estudio de sueño. Lo que sí podemos decirte es que amerita que lo revises.",
+        "Esto importa más de lo que parece. La apnea sin tratar se asocia con presión alta, problemas cardiovasculares y accidentes de tránsito. Y responde muy bien al tratamiento cuando se diagnostica."
+      ]
+    },
+    ambar:{
+      tag:"Resultado · Zona intermedia",
+      h:"Hay señales que vale la pena revisar, y hábitos que puedes cambiar desde hoy.",
+      p:[
+        "Tu puntaje cae en una zona intermedia: no es una alarma fuerte, pero tampoco es limpio. Lo sensato es hacer las dos cosas — comentarlo con tu médico en tu próxima consulta, y mientras tanto atacar lo que sí está bajo tu control.",
+        "Buena parte de lo que arruina el sueño de un hombre de 40 es corregible sin medicamentos y sin aparatos. Pero solo después de descartar lo médico."
+      ]
+    },
+    verde:{
+      tag:"Resultado · Territorio de hábitos",
+      h:"No hay señales médicas de alarma. Tu problema es de estructura, no de salud.",
+      p:[
+        "Tus respuestas no marcan las señales típicas de apnea ni de somnolencia excesiva. Eso es una buena noticia y significa algo concreto: lo que te está costando el descanso probablemente está en cómo están armadas tus noches y tus días.",
+        "Esa es exactamente la categoría de problema que sí se puede entrenar."
+      ]
+    }
+  };
+  const v=veredictos[nivel];
+
+  /* ---- BANDERAS ---- */
+  const flags=[];
+  if(a.apneas===1) flags.push(["r","Alguien te ha visto dejar de respirar mientras duermes. Esta sola respuesta justifica una consulta médica, sin importar el resto del cuestionario."]);
+  if(a.manejando===1) flags.push(["r","Te has quedado dormido manejando. Es un tema de seguridad, tuya y de quien va contigo. Menciónalo explícitamente cuando consultes."]);
+  if(sb>=5) flags.push(["r",`Tu puntaje STOP-BANG es ${sb} de 8, que corresponde a riesgo alto de apnea del sueño.`]);
+  else if(sb>=3) flags.push(["a",`Tu puntaje STOP-BANG es ${sb} de 8: riesgo intermedio. Vale la pena mencionarlo en tu próxima consulta médica.`]);
+  if(ep>=15) flags.push(["r",`Tu somnolencia diurna es alta (${ep} de 24). Ese nivel no se explica solo por dormir poco.`]);
+  else if(ep>=11) flags.push(["a",`Tienes somnolencia diurna por encima de lo normal (${ep} de 24).`]);
+  if(a.insomnio===1) flags.push(["a","Cumples el patrón temporal del insomnio crónico (3+ noches por semana, 3+ meses). El tratamiento de primera línea para esto no son las pastillas: es la terapia cognitivo-conductual para el insomnio (TCC-I). Pregunta por ella."]);
+  if(a.animo===1) flags.push(["a","Reportaste ánimo bajo sostenido. El sueño y el ánimo se empujan mutuamente, y tratar solo uno de los dos suele fallar. Vale la pena hablarlo con un profesional de salud mental."]);
+  if(a.alcohol===1) flags.push(["a","Usas alcohol para dormir. Te ayuda a caer dormido y te arruina la segunda mitad de la noche: suprime el sueño profundo y provoca despertares de madrugada. Es una de las causas más comunes del despertar a las 3am."]);
+  if(imc>35) flags.push(["a",`Tu índice de masa corporal es ${imc.toFixed(1)}, que por sí solo aumenta el riesgo de apnea.`]);
+  if(a.ronquido_flag==="preguntar"||a.apneas_flag==="preguntar") flags.push(["a","Respondiste \"no sé\" a preguntas sobre tu ronquido o tu respiración. Ese dato existe: alguien que haya dormido cerca de ti lo tiene. Consíguelo antes de descartar nada."]);
+  if(a.hijos===1) flags.push(["v","Tienes hijos que te despiertan. Esto no es un problema médico y no lo vamos a tratar como tal — pero significa que la mayoría de los consejos de sueño que vas a encontrar en internet no aplican a ti, porque asumen que controlas tu noche. Tú no la controlas."]);
+
+  /* ---- PRÓXIMOS PASOS ---- */
+  const pasos={
+    rojo:[
+      "Pide cita con un médico esta semana. Puede ser tu médico general, un neumólogo o una clínica del sueño — en Guatemala hay varias que hacen polisomnografía y estudios en casa.",
+      "Lleva impreso este resultado. Dile la frase exacta: \"Salí con riesgo alto en un tamizaje STOP-BANG y quiero descartar apnea del sueño.\" Eso ahorra media consulta.",
+      "Si tienes pareja, pídele que te acompañe o que te describa qué escucha en la noche. Es información clínica y vale más que la tuya.",
+      "No compres nada todavía. Ni aparatos, ni suplementos, ni cintas para la boca. La cinta para la boca es específicamente peligrosa si tienes apnea sin diagnosticar."
+    ],
+    ambar:[
+      "Menciónalo en tu próxima consulta médica. No es urgente, pero tampoco es para archivarlo.",
+      "Fija una sola hora de despertar, los siete días. Es la intervención con mejor evidencia y la única que funciona aunque tus noches sean impredecibles.",
+      "Saca el alcohol de la ecuación durante dos semanas y observa qué pasa con tus madrugadas.",
+      "Luz de sol en los ojos dentro de la primera hora después de despertar. Cinco a diez minutos. Gratis."
+    ],
+    verde:[
+      "Fija una sola hora de despertar, los siete días de la semana. Incluidos sábado y domingo. Es la intervención con más evidencia que existe.",
+      "Luz de sol directa dentro de la primera hora tras despertar: cinco a diez minutos. Ancla tu reloj interno mejor que cualquier suplemento.",
+      "Corta la cafeína seis horas antes de acostarte. Su vida media es de cinco a seis horas: el café de las 4pm sigue circulando a medianoche.",
+      "Identifica tu hora de venganza. Si te quedas despierto en el teléfono después de acostar a los niños, no es falta de disciplina: es el único rato del día que te pertenece. Ese problema no se resuelve apagando pantallas, se resuelve devolviéndote tiempo propio antes de las 9pm."
+    ]
+  };
+
+  const msg=encodeURIComponent(`Hola. Acabo de hacer el tamizaje de sueño. Mi resultado fue: ${nivel.toUpperCase()} (STOP-BANG ${sb}/8, Epworth ${ep}/24). Quiero recibir ${NOMBRE_PROGRAMA}.`);
+
+  const sbTier = sb>=5?"Riesgo alto":(sb>=3?"Riesgo intermedio":"Riesgo bajo");
+  const epTier = ep>=15?"Somnolencia alta":(ep>=11?"Por encima de lo normal":"Dentro de lo normal");
+
+  $("quiz").classList.add("hidden");
+  const r=$("result");
+  r.classList.remove("hidden");
+  r.innerHTML=`
+    <div class="result">
+      <div class="verdict bar-${nivel}">
+        <div class="verdict-tag tag-${nivel}">${v.tag}</div>
+        <h2>${v.h}</h2>
+        ${v.p.map(p=>`<p>${p}</p>`).join("")}
+      </div>
+
+      <div class="scores">
+        <div class="score">
+          <div class="score-name">STOP-BANG · Apnea</div>
+          <div class="score-val">${sb}<span>/8</span></div>
+          <div class="score-tier">${sbTier}</div>
+        </div>
+        <div class="score">
+          <div class="score-name">Epworth · Somnolencia</div>
+          <div class="score-val">${ep}<span>/24</span></div>
+          <div class="score-tier">${epTier}</div>
+        </div>
+      </div>
+
+      ${flags.length?`<div class="flags"><h3>Lo que salió en tus respuestas</h3>
+        ${flags.map(([t,txt])=>`<div class="flag"><span class="mark mark-${t}">${t==="r"?"!":(t==="a"?"•":"›")}</span><span>${txt}</span></div>`).join("")}
+      </div>`:""}
+
+      <div class="next">
+        <h3>Qué hacer ahora</h3>
+        <ol>${pasos[nivel].map(p=>`<li>${p}</li>`).join("")}</ol>
+      </div>
+
+      <div class="cta-box">
+        <h3>${nivel==="rojo"?"Mientras consigues la cita":"El siguiente paso"}</h3>
+        <p>${nivel==="rojo"
+          ? "Nada de lo que enseñamos reemplaza esa consulta. Pero si quieres, te mandamos por WhatsApp lo que sí puedes hacer en paralelo — sin aparatos y sin suplementos."
+          : "Te mandamos por WhatsApp un protocolo de 7 días, diseñado para hombres que no controlan del todo sus noches porque tienen hijos."}</p>
+        <a href="https://wa.me/${WHATSAPP_NUMERO}?text=${msg}" target="_blank" rel="noopener">
+          <button class="btn">Recibirlo por WhatsApp</button>
+        </a>
+        <button class="btn btn-ghost" onclick="window.print()">Guardar o imprimir este resultado</button>
+      </div>
+
+      <div class="footnote">
+        <b>Sobre esta herramienta.</b> Usa el cuestionario STOP-BANG (tamizaje de apnea obstructiva del sueño) y la Escala de Somnolencia de Epworth, dos instrumentos validados y de uso público en medicina del sueño. Son herramientas de <b>tamizaje, no de diagnóstico</b>: detectan quién debería ser evaluado, no quién tiene la enfermedad. Un puntaje alto no significa que tengas apnea; un puntaje bajo no la descarta por completo.
+        <br><br>
+        <b>No somos médicos.</b> Somos entrenadores. No diagnosticamos, no tratamos y no recetamos. Si algo de tu salud te preocupa, la respuesta correcta siempre es un profesional de la salud, no un programa de entrenamiento.
+        <br><br>
+        Tus respuestas se calcularon en tu propio teléfono y no se enviaron a ningún servidor.
+      </div>
+    </div>
+  `;
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
