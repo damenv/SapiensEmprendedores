@@ -382,3 +382,57 @@
 .so-footer__nav a { color: var(--so-ink-dim); transition: color 0.2s var(--so-ease); }
 .so-footer__nav a:hover { color: var(--so-green-bright); }
 .so-footer__muted { font-size: 11px; letter-spacing: 0.15em; margin: 0; }
+
+/* IGSS welcome popup */
+.igss-popup {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  background: rgba(6, 10, 8, 0.72);
+  backdrop-filter: blur(4px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.igss-popup.is-visible { opacity: 1; pointer-events: auto; }
+.igss-popup__card {
+  position: relative; width: 100%; max-width: 420px;
+  background: linear-gradient(180deg, #0f2119, #0a0f0d);
+  border: 1px solid rgba(242, 237, 224, 0.14);
+  border-radius: 20px;
+  padding: clamp(28px, 5vw, 40px);
+  text-align: center;
+  transform: translateY(12px) scale(0.98);
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.igss-popup.is-visible .igss-popup__card { transform: translateY(0) scale(1); }
+.igss-popup__close {
+  position: absolute; top: 14px; right: 14px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: transparent; border: 1px solid rgba(242, 237, 224, 0.2);
+  color: #f2ede0; font-size: 16px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.igss-popup__close:hover { border-color: #6bc19a; color: #6bc19a; }
+.igss-popup__eyebrow {
+  font-family: "Bebas Neue", "Arial Narrow", sans-serif;
+  letter-spacing: 0.4em; font-size: 11px; color: #6bc19a;
+  text-transform: uppercase; margin: 0 0 14px;
+}
+.igss-popup__title {
+  font-family: "Bebas Neue", "Arial Narrow", sans-serif;
+  font-weight: 400; font-size: clamp(26px, 4vw, 32px);
+  line-height: 1.1; text-transform: uppercase; color: #f2ede0;
+  margin: 0 0 12px;
+}
+.igss-popup__body {
+  color: #a9b1ac; font-size: 15px; line-height: 1.6;
+  margin: 0 0 26px;
+}
+.igss-popup__actions { display: flex; flex-direction: column; gap: 10px; }
+.igss-popup__link {
+  color: #a9b1ac; font-size: 12px; letter-spacing: 0.1em; margin-top: 4px;
+  cursor: pointer; background: none; border: none; text-decoration: underline;
+  font-family: "Inter", system-ui, sans-serif;
+}
+.igss-popup__link:hover { color: #f2ede0; }
